@@ -2,6 +2,7 @@
 
 A utiliser avec [https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion](https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion)
 
+et docker compose 17
 
 # Elastic stack (ELK) on Docker
 
