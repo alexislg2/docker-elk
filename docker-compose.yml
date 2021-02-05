@@ -12,14 +12,19 @@ services:
         target: /usr/share/elasticsearch/config/elasticsearch.yml
         read_only: true
       - type: volume
-        source: elasticsearch
+        source: ./elasticsearch_data
         target: /usr/share/elasticsearch/data
+
     ports:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
       ELASTIC_PASSWORD: changeme
+      VIRTUAL_HOST: elastic.familinkframe.com
+      LETSENCRYPT_HOST: elastic.familinkframe.com
+      LETSENCRYPT_EMAIL: alexis@asweshare.com
+      VIRTUAL_PORT: 9200
     networks:
       - elk
 
@@ -52,6 +57,11 @@ services:
       context: kibana/
       args:
         ELK_VERSION: $ELK_VERSION
+    environment:
+      VIRTUAL_HOST: kibana.familinkframe.com
+      LETSENCRYPT_HOST: kibana.familinkframe.com
+      LETSENCRYPT_EMAIL: alexis@asweshare.com
+      VIRTUAL_PORT: 5601
     volumes:
       - type: bind
         source: ./kibana/config/kibana.yml
@@ -66,7 +76,17 @@ services:
 
 networks:
   elk:
-    driver: bridge
+    external:
+      name: webproxy
+
+
+        #networks:
+        #  elk:
+        #driver: bridge
+        #external:
+        #name: webproxy
 
 volumes:
   elasticsearch:
+
+
